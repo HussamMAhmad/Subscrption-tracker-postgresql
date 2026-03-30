@@ -4,16 +4,19 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import subscriptionRouter from "./routes/subsription.route.js";
 import errorMidlleware from "./middleware/error.middleware.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(express.json()); 
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({extended : false}));
 
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/subscriptions", subscriptionRouter);
 
-app.use(errorMidlleware); 
+app.use(errorMidlleware);
 
 app.get("/", (req, res) => {
   res.send("Welome to the subscription tracker by postgreysql");
