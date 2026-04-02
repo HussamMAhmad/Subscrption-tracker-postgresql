@@ -33,7 +33,6 @@ export const signUp = async (req, res, next) => {
             password: hashpassword,
           },
         });
-        console.log("newUser:", newUser);
 
         const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, {
           expiresIn: JWT_EXP,
