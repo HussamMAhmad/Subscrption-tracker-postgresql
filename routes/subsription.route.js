@@ -1,4 +1,6 @@
 import { Router } from "express";
+import authenticateToken from "../middleware/auth.middleware.js";
+import newSubscription from "../controller/subscription.controller.js";
 
 const subscriptionRouter = Router();
 
@@ -10,9 +12,7 @@ subscriptionRouter.get("/:id", (req, res) => {
   res.send({ title: "Get subscription by ID" });
 });
 
-subscriptionRouter.post("/", (req, res) => {
-  res.send({ title: "Create a new subscription" });
-});
+subscriptionRouter.post("/", authenticateToken, newSubscription);
 
 subscriptionRouter.put("/:id", (req, res) => {
   res.send({ title: "Update subscription by ID" });
