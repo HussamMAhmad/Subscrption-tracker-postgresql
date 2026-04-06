@@ -15,27 +15,15 @@ const StatusEnum = z.enum(["ACTIVE", "EXPIRED", "CANCELED"]);
 const PaymentMethodEnum = z.enum(["APPLEPAY", "MASTERCARD", "VISA", "PAYPAL"]);
 
 export const SubValidator = z.object({
-  id: z.string().cuid(),
   name: z
     .string()
     .max(100, "Name must be less than 100 characters")
-    .min(2, "Name is required")
-    .max(50, "too long")
-    .required("Name is required"),
-  price: z
-    .number()
-    .int()
-    .positive("Price must be a positive number")
-    .required("Price is required"),
-  currency: CurrencyEnum.string()
-    .required("Currency is required")
-    .default("USD"),
-  frequency: FrequencyEnum.string(),
-  category: CategoryEnum.string().required(),
-  paymentmethod: PaymentMethodEnum.required().string(),
-  status: StatusEnum.string().default("active"),
-  startdate: z.coerce
-    .date()
-    .max(new Date(), "start date must be in the past")
-    .required(),
+    .min(2, "Name must be at least 2 characters"),
+  price: z.number().positive("Price must be a positive number"),
+  currency: CurrencyEnum.default("USD"),
+  frequency: FrequencyEnum,
+  category: CategoryEnum,
+  paymentMethod: PaymentMethodEnum,
+  status: StatusEnum.default("ACTIVE"),
+  startDate: z.coerce.date().max(new Date(), "start date must be in the past"),
 });
