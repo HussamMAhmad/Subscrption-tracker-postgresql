@@ -31,7 +31,7 @@ const newSubscription = async (req, res, next) => {
         where: { id: subscription.id },
         data: { status: "EXPIRED" },
       });
-      return res.status(201).json({success: true , data: updateSubscription});
+      return res.status(201).json({ success: true, data: updateSubscription });
     }
 
     res.status(201).json({ success: true, data: subscription });
@@ -40,4 +40,25 @@ const newSubscription = async (req, res, next) => {
   }
 };
 
-export default newSubscription; 
+export default newSubscription;
+
+export const getAllSubscriptions = async (req, res, next) => {
+  try {
+    console.log("req.params.id", req.params.id);
+    console.log("req.user.id", req.user.id);  
+    if (req.user.id != req.params.id) {
+      const error = new Error("you are not the owner of this account"); 
+      error.status = 401;
+      throw error; 
+    }
+
+    const subscriptions = await prisma.subscription.findMany({
+      where: {
+        userId : req.params.id,
+      }
+    }); 
+    res.status(200).json({ success: true, data: subscriptions });
+  } catch (error) {
+    next(error);
+  }
+};
