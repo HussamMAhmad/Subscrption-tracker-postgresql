@@ -6,6 +6,7 @@ import subscriptionRouter from "./routes/subsription.route.js";
 import errorMidlleware from "./middleware/error.middleware.js";
 import cookieParser from "cookie-parser";
 import arcjetMiddleware from "./middleware/arcjet.middleware.js";
+import workflowRouter from "./routes/workflow.route.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(arcjetMiddleware);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/subscriptions", subscriptionRouter);
+app.use("/api/workflows", workflowRouter);
 
 app.use(errorMidlleware);
 
