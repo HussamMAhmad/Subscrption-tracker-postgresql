@@ -25,6 +25,7 @@ const newSubscription = async (req, res, next) => {
         userId: req.user.id,
       },
     });
+
     console.log("createSubscription", createSubscription.id);
     const { workflowRunId } = await client.trigger({
       url: `${SERVER_URL}/api/workflows/subscription/reminder`,

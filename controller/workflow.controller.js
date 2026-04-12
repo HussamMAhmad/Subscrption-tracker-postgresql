@@ -1,6 +1,7 @@
 import { serve } from "@upstash/workflow/express";
 import { prisma } from "../lib/prisma.js";
 import dayjs from "dayjs";
+import sendEmail from "../utils/send-email.js";
 
 const reminders = [7, 5, 2, 1];
 
@@ -17,7 +18,7 @@ const workflowServer = serve(async (context) => {
       });
     },
   );
-
+  console.log("the subscription from workflow : ", subscription);
   if (!subscription || subscription.status != "ACTIVE") {
     console.log("Subscription not found or not active");
     return;
@@ -30,7 +31,7 @@ const workflowServer = serve(async (context) => {
     return;
   }
 
-  for (const daysBefore = 0; daysBefore < reminders.length; daysBefore++) {
+  for (let daysBefore = 0; daysBefore < reminders.length; daysBefore++) {
     const reminde = renewalDate.subtract(reminders[daysBefore], "day");
 
     if (reminde.isAfter(dayjs())) {
@@ -40,8 +41,11 @@ const workflowServer = serve(async (context) => {
         context,
       );
     }
-
-    await triggerReminder(`reminder ${reminders[daysBefore]} days`, context);
+    await triggerReminder(
+      `${reminders[daysBefore]} days before reminder`,
+      context,
+      subscription,
+    );
   }
 });
 
@@ -52,9 +56,13 @@ const sleepUntilReminder = async (label, date, context) => {
   await context.sleepUntil(label, date.toDate());
 };
 
-const triggerReminder = async (label, context) => {
+const triggerReminder = async (label, context, subscription) => {
   return await context.run(label, () => {
     console.log(`Triggering ${label} reminder`);
-    // send Email
+    sendEmail({
+      to: subscription.user.email,
+      type: label,
+      subscription,
+    });
   });
 };
