@@ -24,7 +24,6 @@ const sendEmail = async ({ to, type, subscription }) => {
 
     const message = template.generateBody(mailInfo);
     const subject = template.generateSubject(mailInfo);
-
     transporter.sendMail(
       {
         from: myEmail,

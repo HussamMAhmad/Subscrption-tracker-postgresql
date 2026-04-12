@@ -41,6 +41,7 @@ const workflowServer = serve(async (context) => {
         context,
       );
     }
+
     await triggerReminder(
       `${reminders[daysBefore]} days before reminder`,
       context,
@@ -59,10 +60,14 @@ const sleepUntilReminder = async (label, date, context) => {
 const triggerReminder = async (label, context, subscription) => {
   return await context.run(label, () => {
     console.log(`Triggering ${label} reminder`);
-    sendEmail({
-      to: subscription.user.email,
-      type: label,
-      subscription,
-    });
+    try {
+      sendEmail({
+        to: subscription.user.email,
+        type: label,
+        subscription,
+      });
+    } catch (error) {
+      console.error(`Error while sending ${label} reminder: `, error);
+    }
   });
 };
