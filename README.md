@@ -1,12 +1,12 @@
-# 🚀 SubTrack - Modern Subscription Tracker
+# 🚀 SubTrack - Modern Subscription Tracker (Express.js Backend)
 
-**SubTrack** is a comprehensive subscription management system designed for users who want to organize their monthly and yearly expenses. The core of the system is a "Smart Notification Engine" that monitors renewal dates and sends automated email reminders to users using modern Background Workflows.
+**SubTrack** is a robust backend system built with **Express.js** to manage and track subscriptions. The project features a "Smart Notification Engine" powered by **Upstash Workflow**, which handles renewal monitoring and automated email alerts to users.
 
 ---
 
 ## 🛠 Tech Stack
 
-* **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+* **Server:** [Express.js](https://expressjs.com/) (Node.js)
 * **Database:** [PostgreSQL](https://www.postgresql.org/) (via Neon DB)
 * **ORM:** [Prisma](https://www.prisma.io/)
 * **Workflow & Automation:** [Upstash Workflow](https://upstash.com/)
@@ -14,35 +14,36 @@
 * **Security:** [Arcjet](https://arcjet.com/) (Bot detection, Rate limiting, Shield)
 * **Emailing:** [Nodemailer](https://nodemailer.com/)
 * **Date Handling:** [Day.js](https://day.js.org/)
-* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Environment Management:** [Dotenv](https://www.npmjs.com/package/dotenv)
 
 ---
 
 ## ✨ Key Features
 
--   ✅ **Subscription Management:** Easily add, edit, and delete subscriptions.
--   ⏳ **Smart Reminders:** Automated notification system sending emails **7, 5, 2, and 1 day(s)** before the renewal date.
--   🛡️ **Advanced Security:** Integrated **Arcjet** to protect APIs from malicious bots and ensure secure operations.
--   🔍 **Robust Validation:** Utilizing **Zod** for strict Schema Validation to prevent malformed data entry.
--   📧 **Professional Email Templates:** Beautifully formatted HTML emails to notify users about upcoming payments.
--   🔄 **Autonomous Lifecycle:** Once a subscription is created, a dedicated background workflow is triggered to manage its entire lifecycle.
+-   ✅ **Subscription Management API:** Full CRUD operations for managing user subscriptions.
+-   ⏳ **Automated Workflows:** Intelligent notification system that triggers emails **7, 5, 2, and 1 day(s)** before renewal using background workflows.
+-   🛡️ **Security-First Approach:** Integrated **Arcjet** middleware to protect routes from malicious bots and implement sophisticated rate limiting.
+-   🔍 **Schema Validation:** Comprehensive use of **Zod** to validate request bodies and ensure data integrity across the API.
+-   📧 **Professional Reminders:** Dynamically generated HTML emails via Nodemailer to notify users about upcoming charges.
+-   🔄 **Event-Driven Architecture:** Leverages Upstash Workflow to manage long-running processes (waiting for dates) without blocking the main event loop.
 
 ---
 
 ## 🏗 System Architecture
 
-The project follows a modern architecture designed for reliability and scalability:
-1.  **Validation Layer:** Inputs are validated via **Zod Schemas** before reaching the database.
-2.  **Logic Layer:** Uses **Next.js Server Actions** for efficient server-side processing.
-3.  **Automation Layer:** **Upstash Workflow** handles the "Sleep/Wake-up" logic to trigger reminders at precise times without the need for traditional, complex Cron Jobs.
+The API is designed with a clear separation of concerns:
+1.  **Middleware Layer:** Handles security (Arcjet), authentication, and logging.
+2.  **Validation Layer:** Uses **Zod** schemas to intercept and validate payloads before they reach the controllers.
+3.  **Controller Layer:** Manages business logic and interacts with the database via **Prisma**.
+4.  **Workflow Layer:** Integrated **Upstash Workflow** to handle the asynchronous "wait-and-trigger" logic for notifications.
 
 ---
 
 ## 🚀 Getting Started
 
-Follow these steps to set up and run the project locally:
+Follow these steps to set up and run the server locally:
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/HussamMAhmad/subscription-tracker.git](https://github.com/HussamMAhmad/subscription-tracker.git)
-cd subscription-tracker
+git clone [https://github.com/HussamMAhmad/subscription-tracker-api.git](https://github.com/HussamMAhmad/subscription-tracker-api.git)
+cd subscription-tracker-api
